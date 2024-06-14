@@ -3,12 +3,41 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package GUI;
-
+import javax.swing.JOptionPane;
 /**
  *
  * @author RyD;
  */
 public class Login extends javax.swing.JFrame {
+    private static final String ADMIN_USERNAME = "admin";
+    private static final String ADMIN_PASSWORD = "admin123";
+    private static final String STUDENT_USERNAME = "student";
+    private static final String STUDENT_PASSWORD = "student123";
+
+    private static boolean isAdmin;
+
+    public static boolean login(String username, String password) {
+        if (username.equals(ADMIN_USERNAME) && password.equals(ADMIN_PASSWORD)) {
+            System.out.println("Admin login successful.");
+            isAdmin = true;
+            return true;
+        } else if (username.equals(STUDENT_USERNAME) && password.equals(STUDENT_PASSWORD)) {
+            System.out.println("Student login successful.");
+            isAdmin = false;
+            return true;
+        } else {
+            System.out.println("Invalid username or password. Please try again.");
+            return false;
+        }
+    }
+
+    public static void logout() {
+        System.out.println("Logged out successfully.");
+    }
+
+    public static boolean isAdmin() {
+        return isAdmin;
+    }
 
     /**
      * Creates new form Login
@@ -106,6 +135,21 @@ public class Login extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        String username = jTextField1.getText();
+        char[] password = jPasswordField1.getPassword();
+        if (login(username, new String(password))) {
+            JOptionPane.showMessageDialog(this, "Login successful");
+            if (isAdmin()) {
+                AppIfAdmin adminApp = new AppIfAdmin();
+                adminApp.setVisible(true);
+            } else {
+                AppIfNotAdmin studentApp = new AppIfNotAdmin();
+                studentApp.setVisible(true);
+            }
+            this.setVisible(false); // Sembunyikan atau tutup jendela login
+        } else {
+            JOptionPane.showMessageDialog(this, "Invalid username or password", "Login Failed", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
